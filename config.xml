@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.clwtele.api" version="1.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>Telecommunication Consumer APP</name>
+<widget id="cf.aksharma.cms" version="1.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Complain Management System</name>
     <description>
         Hello World sample application that responds to the deviceready event.
     </description>
