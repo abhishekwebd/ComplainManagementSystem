@@ -111,7 +111,7 @@ if(localStorage.getItem("Code") != null && localStorage.getItem("IsVerified") !=
 	app.controller('RecordCtrl', function ($scope, $http) {
   
     $scope.Login = function () {
-	
+	$scope.error = "Authenticating...";
         http = localStorage.getItem("serverpath")+"staffdata.php?Code=logincheck&username="+$scope.username+"&password="+$scope.password;//the REST service Server to fetch the day stock 
    
         $http.get(http)
