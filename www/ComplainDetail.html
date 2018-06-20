@@ -25,7 +25,8 @@ if(localStorage.getItem("Code") == null){
 
 <style type="text/css">
 	body{
-		 background:url(../images/maxresdefault.jpg);
+		  background:url(../images/back.png) no-repeat;
+		 background-size: cover;
 	}
 </style>
 </head>
@@ -47,13 +48,13 @@ if(localStorage.getItem("Code") == null){
 		<div style="margin: 5px;">
 			
 				<div class="bs-component">
-					<div class="panel panel-primary">
+					<div class="panel " style="background-color: transparent;" >
 						<div class="panel-heading">
 							<h3 class="panel-title">Complain Details</h3>
 							<br>
 							<p>{{ today | date : "fullDate"}}</p>
 						</div>
-						<div class="panel-body" style="background:url(images/maxresdefault.jpg);overflow: scroll;" >
+						<div class="panel-body" style="overflow: scroll;" >
 							<div class="text-center">
 								<img src="img/logo.png"  width="70px">
 							</div>
@@ -88,7 +89,7 @@ if(localStorage.getItem("Code") == null){
 							<tr class="closerow">
 								<td colspan="3" >
 									<a data-toggle="modal" class="btn btn-danger" data-target="#myModal">
-										<i class="fa fa-close fa-2x " title="Close Complain">Close Complain</i>
+										<i class="fa fa-close " title="Close Complain">Close Complain</i>
 									</a>
 
 									<!-- Modal -->

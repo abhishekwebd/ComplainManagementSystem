@@ -22,7 +22,8 @@ if(localStorage.getItem("Code") == null){
 
 <style type="text/css">
 	body{
-		 background:url(../images/maxresdefault.jpg);
+		 background:url(../images/back.png) no-repeat;
+		 background-size: cover;
 	}
 </style>
 </head>
@@ -43,36 +44,38 @@ if(localStorage.getItem("Code") == null){
 		<div style="margin: 5px;">
 			
 				<div class="bs-component">
-					<div class="panel panel-primary">
+					<div class="panel " style="background-color: transparent;" >
 						<div class="panel-heading">
 							<h3 class="panel-title">Track Complain</h3>
 							<br>
 							<p>{{ today | date : "fullDate"}}</p>
 						</div>
-						<div class="panel-body" style="background:url(images/maxresdefault.jpg);">
-							<div class="text-center">
-								<img src="img/logo.png"  width="70px">
-							</div>
-							<br>
-							<h4 class="alert-success alert">Complain List</h4>
+						<div class="panel-body" >
+						
+						
+							
 							<div style="overflow: scroll;">
 							<table class="table" style="font-weight: bold;" >
 								<tr>
 									<th>Complain No</th>
 									<th>Remark</th>
+									<th>Department </th>
 									<th>Complain Type</th>
+									<th>Complain Name</th>
 									<th>Date</th>
 									<th>Status</th>
 								
 								</tr>
-								<tr ng-repeat="x in details" style="text-align: left;">
+								<tr ng-repeat="x in details" style="text-align: left;font-size: normal;font-weight: normal;">
 									<td>{{ x.ComplainNo }}</td>
 
 									<td>
 										<a ng-click="clink( x.Vno,x.Status,x.ComplainNo)" >{{ x.ComplainRemark }}</a> </td>
-									<td>{{x.Name}}</td>
+									<td>{{x.DeptName}}</td>
+									<td>{{x.CompTypeName}}</td>
+									<td>{{x.CompName}}</td>
 									<td>{{x.CompDate}}</td>
-									<td><select disabled=""  ng-options="opt.id as opt.name for opt in statuslist" ng-selected="opt.id == x.Status" ng-model="statuslistdata">
+									<td><select disabled=""   ng-options="opt.id as opt.name for opt in statuslist" ng-selected="opt.id == x.Status" ng-model="statuslistdata">
 
 									</select>
 								<span style="visibility: hidden;">	{{statuslistdata = x.Status}}</span>
@@ -104,7 +107,7 @@ if(localStorage.getItem("Code") == null){
 		  ]
 			 
 
-			var q = "select Vno,ComplainNo,ComplainRemark,Status,Name,CompDate from tblComplainEntry  inner join tblComplain on tblComplain.Code = tblComplainEntry.Compid where ConsumerId ="+localStorage.getItem("Code")+" and Quarterid = "+localStorage.getItem("quaterid");
+			var q = "select Vno,ComplainNo,ComplainRemark,Status,tblComplain.Name as CompName,replace(tblComplainType.Name,'Problems','') as CompTypeName,CompDate,left(tblDepartment.Name, 4)  as DeptName from tblComplainEntry  inner join tblComplain on tblComplain.Code = tblComplainEntry.Compid inner join tblComplainType on tblComplainType.Code = tblComplain.CompTypeId inner join tblDepartment on tblDepartment.Code = tblComplainType.Deptid where ConsumerId ="+localStorage.getItem("Code")+" and Quarterid = "+localStorage.getItem("quaterid");
 
 			$http.get(localStorage.getItem("serverpath")+"staffdata.php?Code=execute&q="+q)
 			.then(function (response) {$scope.details = response.data.result; });

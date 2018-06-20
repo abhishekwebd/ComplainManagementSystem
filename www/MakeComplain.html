@@ -22,7 +22,9 @@ if(localStorage.getItem("Code") == null){
 
 <style type="text/css">
 	body{
-		 background:url(../images/maxresdefault.jpg);
+		/* background:url(../images/maxresdefault.jpg);*/
+		 background:url(../images/back.png) no-repeat;
+		 background-size: cover;
 	}
 </style>
 </head>
@@ -43,20 +45,23 @@ if(localStorage.getItem("Code") == null){
 		<div style="margin: 5px;">
 			
 				<div class="bs-component">
-					<div class="panel panel-primary" style="background:url(images/maxresdefault.jpg);">
+					<div class="panel" style="background-color: transparent;" >
 						<div class="panel-heading">
 							<h3 class="panel-title">Add Complain</h3>
 							<br>
 							<p>{{ today | date : "fullDate"}}</p>
 						</div>
 						<div class="panel-body">
-							<div class="text-center">
-								<img src="img/logo.png"  width="70px">
-							</div>
-							<br><br>
+						
 				
 			<h4 class="alert-success alert" ng-repeat="a in alert">{{a.Msg}}</h4>
- 		<select class="form-control" ng-init="ctypeselect" ng-model="ctypeselect" ng-change="Update()">
+
+				<select class="form-control" ng-init="deptSelect" ng-model="deptSelect" ng-change="UpdateDept()">
+ 			<option value="" selected="" disabled="">Select Department Type</option>
+      <option ng-repeat="x in deptlist" value="{{x.Code}}">{{x.Name}}</option>
+    </select>
+
+ 		<select class="form-control" id="ctypeselect" ng-init="ctypeselect" style="visibility: hidden;" ng-model="ctypeselect" ng-change="Update()" >
  			<option value="" selected="" disabled="">Select Complain Type</option>
       <option ng-repeat="x in ctypes" value="{{x.Code}}">{{x.Name}}</option>
     </select>
@@ -99,9 +104,12 @@ if(localStorage.getItem("Code") == null){
 		var app = angular.module('myApp', []);
 		app.controller('UserDetails', function($scope, $http) {
 		 $scope.today = new Date();
-		var q = "select Code,Name from tblComplainType where IsDeactive =0 and IsDelete =0";
-			$http.get(localStorage.getItem("serverpath")+"staffdata.php?Code=execute&q="+q)
-			.then(function (response) {$scope.ctypes = response.data.result; });
+
+		 var dept = "select Code,Name from tblDepartment where IsDeactive =0 and IsDelete =0";
+			$http.get(localStorage.getItem("serverpath")+"staffdata.php?Code=execute&q="+dept)
+			.then(function (response) {$scope.deptlist = response.data.result; });
+
+		
 
 
 			 $scope.LogOut = function () {
@@ -109,6 +117,15 @@ if(localStorage.getItem("Code") == null){
 				 localStorage.removeItem("IsVerified");
 				 window.location.href= "login.html";
    			 };
+
+   			 	$scope.UpdateDept = function() {
+      		 // alert($scope.deptSelect);
+      		$("#ctypeselect").css("visibility","visible");
+      	var q = "select Code,Name from tblComplainType where IsDeactive =0 and IsDelete =0 and DeptId = "+$scope.deptSelect;
+			$http.get(localStorage.getItem("serverpath")+"staffdata.php?Code=execute&q="+q)
+			.then(function (response) {$scope.ctypes = response.data.result; });
+    		};
+
 
    			$scope.Update = function() {
       		 // alert($scope.ctypeselect);
@@ -132,6 +149,10 @@ if(localStorage.getItem("Code") == null){
 			};
 
 			$scope.Submit = function(){
+
+				if($scope.CompRemark == undefined || $scope.CompRemark == ""){
+					alert("All Fields Are Mendatory"); return false;}	
+					
 				q = "exec sp_ComplainEntry "+localStorage.getItem("Code")+","+sessionStorage.getItem("rbComp")+", '"+$scope.CompRemark+"' ,0,'Complain is now active',0,'Consumer','I'";
 				//alert(q);
 			 $http.get(localStorage.getItem("serverpath")+"staffdata.php?Code=addComplain&q="+q)
